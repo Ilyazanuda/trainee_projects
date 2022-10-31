@@ -1,0 +1,327 @@
+﻿{
+  "paragraphs": [
+    {
+      "title": "Import modules",
+      "text": "%pyspark\n\nimport re\nimport os",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-24T10:29:09+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "python"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1650791877657_2072912067",
+      "id": "paragraph_1650791877657_2072912067",
+      "dateCreated": "2022-04-24T09:17:57+0000",
+      "dateStarted": "2022-04-24T10:29:09+0000",
+      "dateFinished": "2022-04-24T10:30:02+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:207"
+    },
+    {
+      "title": "Get datasets",
+      "text": "%sh\n\nhdfs dfs -rm -r /tmp/get_movies_pyspark_zeppelin\n\nhdfs dfs -mkdir -p /tmp/get_movies_pyspark_zeppelin/data\n\nwget https://files.grouplens.org/datasets/movielens/ml-latest-small.zip\nunzip ml-latest-small.zip\n\nrm -r ml-latest-small.zip\n\nhdfs dfs -put ml-latest-small/movies.csv /tmp/get_movies_pyspark_zeppelin/data\nhdfs dfs -put ml-latest-small/ratings.csv /tmp/get_movies_pyspark_zeppelin/data\n\nrm -r ml-latest-small",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-24T10:30:02+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": false,
+          "language": "sh"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sh",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "rm: `/tmp/get_movies_pyspark_zeppelin': No such file or directory\n--2022-04-24 10:30:14--  https://files.grouplens.org/datasets/movielens/ml-latest-small.zip\nResolving files.grouplens.org (files.grouplens.org)... 128.101.65.152\nConnecting to files.grouplens.org (files.grouplens.org)|128.101.65.152|:443... connected.\nHTTP request sent, awaiting response... 200 OK\nLength: 978202 (955K) [application/zip]\nSaving to: ‘ml-latest-small.zip’\n\n     0K .......... .......... .......... .......... ..........  5% 1.36M 1s\n    50K .......... .......... .......... .......... .......... 10% 2.58M 0s\n   100K .......... .......... .......... .......... .......... 15%  145M 0s\n   150K .......... .......... .......... .......... .......... 20% 2.64M 0s\n   200K .......... .......... .......... .......... .......... 26%  121M 0s\n   250K .......... .......... .......... .......... .......... 31%  246M 0s\n   300K .......... .......... .......... .......... .......... 36% 2.66M 0s\n   350K .......... .......... .......... .......... .......... 41%  168M 0s\n   400K .......... .......... .......... .......... .......... 47%  182M 0s\n   450K .......... .......... .......... .......... .......... 52%  198M 0s\n   500K .......... .......... .......... .......... .......... 57%  219M 0s\n   550K .......... .......... .......... .......... .......... 62%  277M 0s\n   600K .......... .......... .......... .......... .......... 68%  211M 0s\n   650K .......... .......... .......... .......... .......... 73% 2.78M 0s\n   700K .......... .......... .......... .......... .......... 78%  228M 0s\n   750K .......... .......... .......... .......... .......... 83%  197M 0s\n   800K .......... .......... .......... .......... .......... 88%  180M 0s\n   850K .......... .......... .......... .......... .......... 94%  239M 0s\n   900K .......... .......... .......... .......... .......... 99%  189M 0s\n   950K .....                                                 100%  134M=0.1s\n\n2022-04-24 10:30:14 (8.27 MB/s) - ‘ml-latest-small.zip’ saved [978202/978202]\n\nArchive:  ml-latest-small.zip\n   creating: ml-latest-small/\n  inflating: ml-latest-small/links.csv  \n  inflating: ml-latest-small/tags.csv  \n  inflating: ml-latest-small/ratings.csv  \n  inflating: ml-latest-small/README.txt  \n  inflating: ml-latest-small/movies.csv  \n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1650792316876_720993118",
+      "id": "paragraph_1650792316876_720993118",
+      "dateCreated": "2022-04-24T09:25:16+0000",
+      "dateStarted": "2022-04-24T10:30:02+0000",
+      "dateFinished": "2022-04-24T10:30:21+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:208"
+    },
+    {
+      "title": "Cfg variables",
+      "text": "%pyspark\n\nmovies_path = 'hdfs:///tmp/get_movies_pyspark_zeppelin/data/movies.csv'\nratings_path = 'hdfs:///tmp/get_movies_pyspark_zeppelin/data/ratings.csv'\nresult_output_path = 'hdfs:///tmp/get_movies_pyspark_zeppelin/output'\ndelimiter = ';'\nheader = 'genre;title;year;rating'",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-24T10:30:21+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "python"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1650792743605_1071443609",
+      "id": "paragraph_1650792743605_1071443609",
+      "dateCreated": "2022-04-24T09:32:23+0000",
+      "dateStarted": "2022-04-24T10:30:21+0000",
+      "dateFinished": "2022-04-24T10:30:21+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:209"
+    },
+    {
+      "title": "Args filter variables",
+      "text": "%pyspark\n\nargs = {'genres': None,\n        'regexp': None,\n        'year_from': None,\n        'year_to': None,\n        'N': None}\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-24T10:30:21+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "python"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1650793157424_1180481968",
+      "id": "paragraph_1650793157424_1180481968",
+      "dateCreated": "2022-04-24T09:39:17+0000",
+      "dateStarted": "2022-04-24T10:30:21+0000",
+      "dateFinished": "2022-04-24T10:30:21+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:210"
+    },
+    {
+      "title": "Functions",
+      "text": "%pyspark\n\ndef get_mapped_movies(line: str):\n    \"\"\"\n    Returns parsed movie tokens\n    \"\"\"\n    try:\n        movie_title_year = re.search(r'(?<=,).*(?=,)', line).group(0).strip('\"')\n        movie_id = int(re.search(r'^\\d+', line).group(0))\n        movie_genres = re.search(r'[-|\\w]+$', line).group(0)\n        movie_title = re.search(r'.*(?=\\(\\d{4}\\))', movie_title_year).group(0).strip(' ')\n        movie_year = int(re.search(r'(?<=\\()\\d{4}(?=\\))', movie_title_year).group(0))\n    except (ValueError, TypeError, AttributeError):\n        return ()\n\n    return ((movie_id, (movie_genre, movie_title, movie_year)) for movie_genre in movie_genres.split('|'))\n\n\ndef get_mapped_ratings(line: str):\n    \"\"\"\n    Returns parsed ratings tokens\n    \"\"\"\n    try:\n        _, movie_id, movie_rating, _ = line.split(',')\n        movie_id, movie_rating = int(movie_id), float(movie_rating)\n    except (ValueError, TypeError, AttributeError):\n        return ()\n\n    return movie_id, [movie_rating, 1]\n\n\ndef get_sum_rating(first_tuple_rating: tuple, second_tuple_rating: tuple):\n    \"\"\"\n    Returns sum ratings by movie_id and sum count of ratings\n    \"\"\"\n    first_rating, first_count = first_tuple_rating\n    second_rating, second_count = second_tuple_rating\n    return first_rating + second_rating, first_count + second_count\n\n\ndef get_avg_rating(rating_and_count: list):\n    \"\"\"\n    Returns average rating by movie_id\n    \"\"\"\n    rating, count = rating_and_count\n    return round(rating / count, 4)\n\n\ndef filter_movies(movie: tuple):\n    \"\"\"\n    Filtering movies by args\n    \"\"\"\n    movie_id, movie_info = movie\n    movie_tokens, movie_rating = movie_info\n    movie_genre, movie_title, movie_year = movie_tokens\n    if args['year_from'] and movie_year < args['year_from']:\n        return\n    if args['year_to'] and movie_year > args['year_to']:\n        return\n    if args['regexp'] and not re.findall(args['regexp'], movie_title):\n        return\n    if args['genres'] and movie_genre not in args['genres']:\n        return\n    return True\n\n\ndef sort_movies(movie: tuple):\n    \"\"\"\n    Sorting movies by tokens\n    \"\"\"\n    movie_id, movie_data = movie\n    movie_tokens, movie_rating = movie_data\n    movie_genre, movie_title, movie_year = movie_tokens\n    return movie_genre, -movie_rating, -movie_year, movie_title\n\n\ndef get_shuffled_movies_tokens(movie: tuple):\n    \"\"\"\n    Shuffling movie tokens positions\n    \"\"\"\n    movie_id, movie_data = movie\n    movie_tokens, movie_rating = movie_data\n    movie_genre, movie_title, movie_year = movie_tokens\n    return movie_genre, movie_title, movie_year, movie_rating\n\n\ndef get_key_for_group_movies(movie: tuple):\n    \"\"\"\n    Returns group token\n    \"\"\"\n    movie_genre, movie_title, movie_year, movie_rating = movie\n    return movie_genre\n\n\ndef get_reduced_movies_by_count(group_movies_by_genre: tuple):\n    \"\"\"\n    Returns reduced list by amount argument\n    \"\"\"\n    movie_genre, movies = group_movies_by_genre\n    return list(movies)[:args['N']]\n\n\ndef get_csv_format(header_rdd, movies_result):\n    \"\"\"\n    Returns movies in CSV format\n    \"\"\"\n    movies_result = movies_result.map(lambda movie_list: delimiter.join(map(str, movie_list)))\n    return header_rdd.union(movies_result)",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-24T10:30:21+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "python"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1650793294753_346036363",
+      "id": "paragraph_1650793294753_346036363",
+      "dateCreated": "2022-04-24T09:41:34+0000",
+      "dateStarted": "2022-04-24T10:30:21+0000",
+      "dateFinished": "2022-04-24T10:30:22+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:211"
+    },
+    {
+      "title": "Pyspark functions",
+      "text": "%pyspark\n\ndef get_movies(ratings_raw, movies_raw):\n    \"\"\"\n    Returns movies in rdd format\n    \"\"\"\n    ratings_normalized = ratings_raw.map(get_mapped_ratings) \\\n                                    .filter(lambda x: x) \\\n                                    .reduceByKey(get_sum_rating) \\\n                                    .mapValues(get_avg_rating)\n\n    movies = movies_raw.flatMap(get_mapped_movies) \\\n                       .join(ratings_normalized) \\\n                       .filter(lambda movie: filter_movies(movie)) \\\n                       .sortBy(sort_movies) \\\n                       .map(get_shuffled_movies_tokens) \\\n                       .groupBy(get_key_for_group_movies) \\\n                       .sortByKey() \\\n                       .flatMap(lambda movies_group: get_reduced_movies_by_count(movies_group))\n\n    return movies",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-24T10:30:22+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "python"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1650793784985_1016560242",
+      "id": "paragraph_1650793784985_1016560242",
+      "dateCreated": "2022-04-24T09:49:44+0000",
+      "dateStarted": "2022-04-24T10:30:22+0000",
+      "dateFinished": "2022-04-24T10:30:22+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:212"
+    },
+    {
+      "title": "Main calls, reading and saving",
+      "text": "%pyspark\n\nratings_raw = sc.textFile(ratings_path)\nmovies_raw = sc.textFile(movies_path)\nheader_rdd = sc.parallelize(header)\n\nmovies_result = get_movies(ratings_raw, movies_raw)\nget_csv_format(header_rdd, movies_result).saveAsTextFile(result_output_path)",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-24T10:30:22+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "python"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://cluster-a74d-m.us-central1-f.c.true-system-346519.internal:33225/jobs/job?id=0",
+              "$$hashKey": "object:1071"
+            },
+            {
+              "jobUrl": "http://cluster-a74d-m.us-central1-f.c.true-system-346519.internal:33225/jobs/job?id=1",
+              "$$hashKey": "object:1072"
+            },
+            {
+              "jobUrl": "http://cluster-a74d-m.us-central1-f.c.true-system-346519.internal:33225/jobs/job?id=2",
+              "$$hashKey": "object:1073"
+            },
+            {
+              "jobUrl": "http://cluster-a74d-m.us-central1-f.c.true-system-346519.internal:33225/jobs/job?id=3",
+              "$$hashKey": "object:1074"
+            },
+            {
+              "jobUrl": "http://cluster-a74d-m.us-central1-f.c.true-system-346519.internal:33225/jobs/job?id=4",
+              "$$hashKey": "object:1075"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1650793923397_62026616",
+      "id": "paragraph_1650793923397_62026616",
+      "dateCreated": "2022-04-24T09:52:03+0000",
+      "dateStarted": "2022-04-24T10:30:22+0000",
+      "dateFinished": "2022-04-24T10:30:40+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:213",
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      }
+    }
+  ],
+  "name": "get_movies_pyspark",
+  "id": "2H2FT7FDA",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.9.1-SNAPSHOT",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {},
+  "path": "/get_movies_pyspark"
+}

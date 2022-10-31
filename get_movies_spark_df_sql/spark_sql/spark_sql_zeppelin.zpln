@@ -1,0 +1,546 @@
+﻿{
+  "paragraphs": [
+    {
+      "title": "Loading the data",
+      "text": "%sh\n\n\nhdfs dfs -rm -r /tmp/get_movies_spark_sql_zeppelin\n\nhdfs dfs -mkdir -p /tmp/get_movies_spark_sql_zeppelin/data\n\nwget https://files.grouplens.org/datasets/movielens/ml-latest-small.zip\nunzip ml-latest-small.zip\n\nrm -r ml-latest-small.zip\n\nhdfs dfs -put ml-latest-small/movies.csv /tmp/get_movies_spark_sql_zeppelin/data\nhdfs dfs -put ml-latest-small/ratings.csv /tmp/get_movies_spark_sql_zeppelin/data\n\nrm -r ml-latest-small",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-28T05:43:27+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": true,
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": false,
+          "language": "sh"
+        },
+        "colWidth": 6,
+        "editorMode": "ace/mode/sh",
+        "fontSize": 12,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Deleted /tmp/get_movies_spark_sql_zeppelin\n--2022-04-28 05:43:32--  https://files.grouplens.org/datasets/movielens/ml-latest-small.zip\nResolving files.grouplens.org (files.grouplens.org)... 128.101.65.152\nConnecting to files.grouplens.org (files.grouplens.org)|128.101.65.152|:443... connected.\nHTTP request sent, awaiting response... 200 OK\nLength: 978202 (955K) [application/zip]\nSaving to: ‘ml-latest-small.zip’\n\n     0K .......... .......... .......... .......... ..........  5% 1.28M 1s\n    50K .......... .......... .......... .......... .......... 10% 2.65M 0s\n   100K .......... .......... .......... .......... .......... 15%  112M 0s\n   150K .......... .......... .......... .......... .......... 20% 2.71M 0s\n   200K .......... .......... .......... .......... .......... 26% 78.6M 0s\n   250K .......... .......... .......... .......... .......... 31%  200M 0s\n   300K .......... .......... .......... .......... .......... 36%  181M 0s\n   350K .......... .......... .......... .......... .......... 41%  230M 0s\n   400K .......... .......... .......... .......... .......... 47% 2.66M 0s\n   450K .......... .......... .......... .......... .......... 52%  248M 0s\n   500K .......... .......... .......... .......... .......... 57%  331M 0s\n   550K .......... .......... .......... .......... .......... 62%  337M 0s\n   600K .......... .......... .......... .......... .......... 68%  240M 0s\n   650K .......... .......... .......... .......... .......... 73%  186M 0s\n   700K .......... .......... .......... .......... .......... 78%  198M 0s\n   750K .......... .......... .......... .......... .......... 83% 2.98M 0s\n   800K .......... .......... .......... .......... .......... 88% 46.9M 0s\n   850K .......... .......... .......... .......... .......... 94%  281M 0s\n   900K .......... .......... .......... .......... .......... 99%  244M 0s\n   950K .....                                                 100%  101M=0.1s\n\n2022-04-28 05:43:32 (8.20 MB/s) - ‘ml-latest-small.zip’ saved [978202/978202]\n\nArchive:  ml-latest-small.zip\n   creating: ml-latest-small/\n  inflating: ml-latest-small/links.csv  \n  inflating: ml-latest-small/tags.csv  \n  inflating: ml-latest-small/ratings.csv  \n  inflating: ml-latest-small/README.txt  \n  inflating: ml-latest-small/movies.csv  \n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1651098489572_247227573",
+      "id": "paragraph_1650885672212_1633387692",
+      "dateCreated": "2022-04-27T22:28:09+0000",
+      "dateStarted": "2022-04-28T05:43:27+0000",
+      "dateFinished": "2022-04-28T05:43:38+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:1833"
+    },
+    {
+      "title": "Setting paths to the data",
+      "text": "%pyspark\n\nmovies_path = '/tmp/get_movies_spark_sql_zeppelin/data/movies.csv'\nratings_path = '/tmp/get_movies_spark_sql_zeppelin/data/ratings.csv'\nresult_path = '/tmp/get_movies_spark_sql_zeppelin/result'\n\ndelimiter = ';'",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-28T05:44:33+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "python"
+        },
+        "colWidth": 6,
+        "editorMode": "ace/mode/python",
+        "fontSize": 12,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1651098489573_332108208",
+      "id": "paragraph_1651094662255_454030766",
+      "dateCreated": "2022-04-27T22:28:09+0000",
+      "dateStarted": "2022-04-28T05:44:33+0000",
+      "dateFinished": "2022-04-28T05:45:12+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:1834"
+    },
+    {
+      "title": "Setting filters",
+      "text": "%pyspark\n\nargs = {'N': None,\n        'regexp': None,\n        'year_from': None,\n        'year_to': None,\n        'genres': None}\n\nif args['regexp']:\n    args['regexp'] = ' '.join(args['regexp'])\n\nargs['genres'] = arg['genres'].split('|') if args['genres'] else []",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-28T05:45:27+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "python"
+        },
+        "colWidth": 6,
+        "editorMode": "ace/mode/python",
+        "fontSize": 12,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1651098489573_350463693",
+      "id": "paragraph_1651095462034_1339627849",
+      "dateCreated": "2022-04-27T22:28:09+0000",
+      "dateStarted": "2022-04-28T05:45:27+0000",
+      "dateFinished": "2022-04-28T05:45:27+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:1835"
+    },
+    {
+      "title": "Create lnd_movies temporary view",
+      "text": "%spark.pyspark\n\nspark.sql(\n    f\"\"\"\n    CREATE TEMPORARY VIEW lnd_movies (\n        mv_id           INT,\n        mv_title_year   STRING,\n        mv_genres       STRING\n    )\n    USING CSV\n    OPTIONS (\n        HEADER = TRUE,\n        PATH = '{movies_path}'\n    )\n    \"\"\"\n)",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-28T05:45:32+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": true,
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "python"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 12,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "DataFrame[]"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1651098489574_681084891",
+      "id": "paragraph_1651095540969_102891012",
+      "dateCreated": "2022-04-27T22:28:09+0000",
+      "dateStarted": "2022-04-28T05:45:32+0000",
+      "dateFinished": "2022-04-28T05:45:35+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:1836"
+    },
+    {
+      "title": "Creating lnd_ratings temporary view",
+      "text": "%spark.pyspark\n\nspark.sql(\n    f\"\"\"\n    CREATE TEMPORARY VIEW lnd_ratings (\n        usr_id      INT,\n        mv_id       INT,\n        mv_rating   FLOAT,\n        timestamp   STRING\n    )\n    USING CSV\n    OPTIONS (\n        HEADER = TRUE,\n        PATH = '{ratings_path}'\n    )\n    \"\"\"\n)",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-28T05:45:37+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": true,
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "python"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 12,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "DataFrame[]"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1651098489574_360522553",
+      "id": "paragraph_1651095660170_126411501",
+      "dateCreated": "2022-04-27T22:28:09+0000",
+      "dateStarted": "2022-04-28T05:45:37+0000",
+      "dateFinished": "2022-04-28T05:45:38+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:1837"
+    },
+    {
+      "title": "Getting normalized movies",
+      "text": "%spark.pyspark\n\nspark.sql(\n    \"\"\"\n    CREATE TEMPORARY VIEW movies AS (\n    SELECT mv_id,\n           REGEXP_EXTRACT(mv_title_year, '(.+)[ ]+[(](\\\\\\d{4})[)]', 1) AS title,\n           REGEXP_EXTRACT(mv_title_year, '(.+)[ ]+[(](\\\\\\d{4})[)]', 2) AS year,\n           EXPLODE(SPLIT(mv_genres, '[|]')) AS genre\n      FROM lnd_movies\n     WHERE trim(mv_title_year) LIKE '%(____)'\n           AND mv_genres NOT LIKE '(%)'\n    )\n    \"\"\"\n)",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-28T05:45:41+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": true,
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "python"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 12,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "DataFrame[]"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1651098489574_1879212194",
+      "id": "paragraph_1651095693834_1288892447",
+      "dateCreated": "2022-04-27T22:28:09+0000",
+      "dateStarted": "2022-04-28T05:45:41+0000",
+      "dateFinished": "2022-04-28T05:45:42+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:1838"
+    },
+    {
+      "title": "Getting normalized ratings",
+      "text": "%spark.pyspark\n\nspark.sql(\n    \"\"\"\n    CREATE TEMPORARY VIEW ratings AS (\n        SELECT mv_id, ROUND(AVG(mv_rating), 4) AS rating\n          FROM lnd_ratings\n         GROUP BY mv_id\n    )\n    \"\"\"\n)",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-28T05:45:44+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": true,
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "python"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 12,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "DataFrame[]"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1651098489574_243177402",
+      "id": "paragraph_1651095756621_779447756",
+      "dateCreated": "2022-04-27T22:28:09+0000",
+      "dateStarted": "2022-04-28T05:45:44+0000",
+      "dateFinished": "2022-04-28T05:45:44+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:1839"
+    },
+    {
+      "title": "Joining normalized movies and ratings",
+      "text": "%spark.pyspark\n\nspark.sql(\n    \"\"\"\n    CREATE TEMPORARY VIEW movies_ratings AS (\n        SELECT genre, title, year, rating\n          FROM movies JOIN ratings ON movies.mv_id = ratings.mv_id\n    )\n    \"\"\"\n)",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-28T05:45:46+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": true,
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "python"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 12,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "DataFrame[]"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1651098489574_759902432",
+      "id": "paragraph_1651095809230_2011660708",
+      "dateCreated": "2022-04-27T22:28:09+0000",
+      "dateStarted": "2022-04-28T05:45:46+0000",
+      "dateFinished": "2022-04-28T05:45:46+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:1840"
+    },
+    {
+      "title": "Getting sql-like strings for filtering data",
+      "text": "%spark.pyspark\n\ncount_n, regexp_filter, genres_filter, year_from_filter, year_to_filter = (None for _ in range(5))\nif args['N']:\n    count_n = f'WHERE rank <= {args[\"N\"]}'\nif args['regexp']:\n    regexp_filter = f'title RLIKE \"{args[\"regexp\"]}\"'\nif args['genres']:\n    genres = [f'\"{genre}\"' for genre in args[\"genres\"]]\n    genres_filter = f'genre IN ({\", \".join(genres)})'\nif args['year_from']:\n    year_from_filter = f'year >= {args[\"year_from\"]}'\nif args['year_to']:\n    year_to_filter = f'year <= {args[\"year_to\"]}'\n\nfilters = ' AND '.join((item for item in (regexp_filter, genres_filter, year_from_filter, year_to_filter) if item))\nif filters:\n    filters = 'WHERE ' + filters",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-28T05:47:20+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "python"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 12,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1651098489574_1345159887",
+      "id": "paragraph_1651095870767_1958104138",
+      "dateCreated": "2022-04-27T22:28:09+0000",
+      "dateStarted": "2022-04-28T05:47:20+0000",
+      "dateFinished": "2022-04-28T05:47:20+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:1841"
+    },
+    {
+      "title": "Filtering and saving the data",
+      "text": "%spark.pyspark\n\nspark.sql(\n    f\"\"\"\n    WITH filtered AS (\n            SELECT genre, title, year, rating,\n                   ROW_NUMBER() OVER (PARTITION BY genre ORDER BY rating DESC, year DESC, title ASC) AS rank\n              FROM movies_ratings\n              {filters}\n              ORDER BY genre ASC, rating DESC, year DESC, title ASC\n        )\n        SELECT genre, title, year, rating\n          FROM filtered\n        {count_n}\n    \"\"\"\n).coalesce(1).write.option('HEADER', 'TRUE').option('DELIMITER', delimiter).csv(result_path, 'OVERWRITE')",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-28T05:47:23+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "language": "python"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 12,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://cluster-1a12-m.us-central1-a.c.true-system-346519.internal:39269/jobs/job?id=0",
+              "$$hashKey": "object:2672"
+            },
+            {
+              "jobUrl": "http://cluster-1a12-m.us-central1-a.c.true-system-346519.internal:39269/jobs/job?id=2",
+              "$$hashKey": "object:2673"
+            },
+            {
+              "jobUrl": "http://cluster-1a12-m.us-central1-a.c.true-system-346519.internal:39269/jobs/job?id=3",
+              "$$hashKey": "object:2674"
+            },
+            {
+              "jobUrl": "http://cluster-1a12-m.us-central1-a.c.true-system-346519.internal:39269/jobs/job?id=4",
+              "$$hashKey": "object:2675"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1651098489574_1460953071",
+      "id": "paragraph_1651096014327_816596197",
+      "dateCreated": "2022-04-27T22:28:09+0000",
+      "dateStarted": "2022-04-28T05:47:23+0000",
+      "dateFinished": "2022-04-28T05:47:41+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:1842"
+    },
+    {
+      "title": "Checking the result",
+      "text": "%sh\n\nhdfs dfs -cat /tmp/get_movies_spark_sql_zeppelin/result/* | head",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-28T05:47:47+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": false,
+          "language": "sh"
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sh",
+        "fontSize": 12,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "genre;title;year;rating\nAction;Tokyo Tribe;2cat: Unable to write to output stream.\n014;5.0\nAction;Justice League: Doom;2012;5.0\nAction;On the Other Side of the Tracks (De l'autre côté du périph);2012;5.0\nAction;Faster;2010;5.0\nAction;Superman/Batman: Public Enemies;2009;5.0\nAction;Wonder Woman;2009;5.0\nAction;Love Exposure (Ai No Mukidashi);2008;5.0\nAction;Max Manus;2008;5.0\nAction;Battle Royale 2: Requiem (Batoru rowaiaru II: Chinkonka);2003;5.0\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1651098489574_2046792106",
+      "id": "paragraph_1651096052106_1457574008",
+      "dateCreated": "2022-04-27T22:28:09+0000",
+      "dateStarted": "2022-04-28T05:47:47+0000",
+      "dateFinished": "2022-04-28T05:47:51+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:1843"
+    },
+    {
+      "text": "%sh\n",
+      "user": "anonymous",
+      "dateUpdated": "2022-04-28T05:47:47+0000",
+      "progress": 0,
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "completionKey": "TAB",
+          "editOnDblClick": false,
+          "completionSupport": false,
+          "language": "sh"
+        },
+        "editorMode": "ace/mode/sh"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1651124867653_1051216414",
+      "id": "paragraph_1651124867653_1051216414",
+      "dateCreated": "2022-04-28T05:47:47+0000",
+      "status": "READY",
+      "$$hashKey": "object:1844"
+    }
+  ],
+  "name": "spark_sql_zepellin",
+  "id": "2H4FSYFRX",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.9.1-SNAPSHOT",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {},
+  "path": "/spark_sql_zepellin"
+}
